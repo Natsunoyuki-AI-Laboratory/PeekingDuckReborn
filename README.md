@@ -80,12 +80,12 @@ The following install options are available.
 pip install ".[<install-option>]"
 ```
 1. `test`: Test functionality with `pytest`.
+2. `pkdr_csv`: Package for parsing PeekingDuckReborn output CSV files.
 
 ### Verifying the Installation
 ```bash
 peekingduck verify-install
 ```
-
 You should see a video of a person waving his hand with
 [bounding boxes overlaid](https://raw.githubusercontent.com/natsunoyuki/PeekingDuckReborn/main/docs/source/assets/getting_started/verify_install.gif).
 
@@ -117,6 +117,17 @@ Run the pipeline with a specified configuration `.yml` file.
 ```bash
 peekingduck run --config_path <path-to-config-yml-file>
 ```
+
+### Reading PeekingDuckReborn Output CSV Files
+PeekingDuckReborn outputs computer vision inference results as CSV files. For example an example output for object detection is:
+```
+Time,bboxes,bbox_labels,obj_attrs
+13:06:24,"[[314, 415, 596, 1026]]","['person']","{'ids': [1]}"
+```
+where predictions for `bboxes`, `bbox_labels` and `obj_attrs` are saved as strings. Because of this the predictions will be loaded as strings instead of lists/arrays of numbers, and cannot be used for analytics directly.
+
+An optional package <a href="https://github.com/Natsunoyuki-AI-Laboratory/PKDR-CSV">PKDR-CSV</a> is available for reading the output CSV files and converting all such "string-of-lists" into lists/arrays for analytics use.
+
 
 ## Local Weights Subdirectory
 The original PeekingDuck model weights will be downloaded from https://storage.googleapis.com/peekingduck/models to a local subdirectory, which is set to `peekingduck_weights/` by default in PeekingDuckReborn. The name and location of `peekingduck_weights/` can be specified through local environment variables specified using a `.env` file.
