@@ -48,11 +48,8 @@ class Detector:  # pylint: disable=too-many-instance-attributes
     ) -> None:
         self.logger = logging.getLogger(__name__)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
         self.model_path = model_path
-
         self.detect_ids = detect_ids
-
         self.input_size = (input_size, input_size)
         self.score_threshold = score_threshold
 
@@ -97,7 +94,6 @@ class Detector:  # pylint: disable=too-many-instance-attributes
             result = self.model(**inputs)
 
         bboxes, classes, scores = self.postprocess(result, image_shape)
-        
         return bboxes, classes, scores
 
 
@@ -109,11 +105,12 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         square shape. Logs model configurations.
 
         Returns:
-            (RTDetrForObjectDetection): RE-DETR model.
+            (RTDetrForObjectDetection): RT-DETR model.
+            (RTDetrImageProcessor): RT-DETR image processor.
         """
         return (
             RTDetrForObjectDetection.from_pretrained(self.model_path),
-            RTDetrImageProcessor.from_pretrained(self.model_path),
+            RTDetrImageProcessor.from_pretrained(self.model_path, use_fast=True),
         )
 
 
