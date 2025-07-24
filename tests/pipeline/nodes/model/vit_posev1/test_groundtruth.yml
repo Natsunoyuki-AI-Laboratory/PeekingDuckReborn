@@ -1,4 +1,4 @@
-vitpose-plus-small:
+usyd-community/vitpose-plus-small:
   t2:
     bboxes: [[0.19026423, 0.08217245, 0.59008735, 0.90596420]]
     keypoints:

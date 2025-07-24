@@ -4,26 +4,28 @@ output: ["keypoints", "keypoint_scores", "keypoint_conns"]
 # Keypoint detection threshold.
 keypoint_score_threshold: 0.5
 
+# Input resolution. Do not touch this. Baked into the model.
+resolution: {width: 192, height: 256}
+
 # Flag to use the model weights hosted on HuggingFace or not.
-huggingface: True
-# https://huggingface.co/docs/transformers/main/en/model_doc/rt_detr
-model_type: vitpose-plus-small
-# Models available:
-# vitpose-plus-small, vitpose-plus-base, vitpose-plus-large, vitpose-plus-huge,
-# vitpose-base, vitpose-base-simple, vitpose-base-coco-aic-mpii.
-# Model directory on HuggingFace: https://huggingface.co/usyd-community.
-huggingface_model_dir: usyd-community
+# If `online: True`, the model weights will be downloaded from
+# HuggingFace. If not, the model weights will be loaded from 
+# `peekingduck_weights/` (see `weights_parent_dir` below).
+online: True # Use the online weights on HuggingFace or not.
 
-# Path to local custom weights.
-local_weights_path: null
+# model_path can be one of the following:
+# 1. HuggingFace model path e.g. usyd-community/vitpose-plus-small.
+#     a. If online: True, weights will be downloaded from HuggingFace.
+#     b. If online: False, weights will be loaded from weights_parent_dir.
+# 2. Full path to some custom weights stored locally.
+model_path: usyd-community/vitpose-plus-small
 
+# Path to peekingduck_weights/ which is the default PeekingDuckReborn 
+# local weights subdirectory.
 weights_parent_dir: null
 weights: {
   pytorch: {
     model_subdir: vit_pose,
-  },
+  }
 }
 model_format: pytorch
-
-# Input resolution. Do not touch this. Baked into the model.
-resolution: {width: 192, height: 256}

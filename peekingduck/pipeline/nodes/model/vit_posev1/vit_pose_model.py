@@ -26,9 +26,6 @@ from peekingduck.pipeline.nodes.base import (
 from peekingduck.pipeline.nodes.model.vit_posev1.vit_pose_files.detector import Detector
 
 
-HF_REPO = "usyd-community"
-
-
 class VITPoseModel(ThresholdCheckerMixin, WeightsDownloaderMixin):
     """Validates configuration, loads VITPose model, and performs inference.
 
@@ -46,20 +43,11 @@ class VITPoseModel(ThresholdCheckerMixin, WeightsDownloaderMixin):
 
         self.check_bounds(["keypoint_score_threshold"], "[0, 1]")
 
-        local_weights_path = self.config.get("local_weights_path", None)
-        if local_weights_path is None:
-            if self.config.get("huggingface", True) is True:
-                # Download pre-trained weights from HuggingFace.
-                model_dir = Path(self.config.get("huggingface_model_dir", HF_REPO))
-                # Account for windows `\`, as HF repos use only `/`.
-                model_path = str(model_dir / self.config["model_type"]).replace("\\", "/")
-            else:
-                # Load HuggingFace pre-trained weights from a local directory.
+        model_path = self.config["model_path"]
+        if not Path(model_path).exists():
+            if not self.config["online"]:
                 model_dir = self._find_paths()
-                model_path = model_dir / self.config["model_type"]
-        else:
-            # Absolute path to custom local weights directory.
-            model_path = Path(local_weights_path)
+                model_path = model_dir / model_path
 
         self.detector = Detector(
             model_path,

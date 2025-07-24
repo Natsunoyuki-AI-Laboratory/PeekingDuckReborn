@@ -28,10 +28,11 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
 
     The RT-DETR node is capable detecting objects from 80 categories. The table
     of object categories can be found
-    :ref:`here <general-object-detection-ids>`. The ``"rtdetr_r50vd "`` model is
-    used by default and can be changed to one of ``("rtdetr_r18vd", 
-    "rtdetr_r34vd", "rtdetr_r50vd", "rtdetr_r101vd", "rtdetr_r18vd_coco_o365",
-    "rtdetr_r50vd_coco_o365", "rtdetr_r101vd_coco_o365")``.
+    :ref:`here <general-object-detection-ids>`. The ``"PekingU/rtdetr_r50vd "`` model is
+    used by default and can be changed to one of ``("PekingU/rtdetr_r18vd", 
+    "PekingU/rtdetr_r34vd", "PekingU/rtdetr_r50vd", "PekingU/rtdetr_r101vd", 
+    "PekingU/rtdetr_r18vd_coco_o365", "PekingU/rtdetr_r50vd_coco_o365", 
+    "PekingU/rtdetr_r101vd_coco_o365")``.
 
     Inputs:
         |img_data|
@@ -47,10 +48,10 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         model_format (:obj:`str`): **{"pytorch"},
             default="pytorch"** |br|
             Defines the weights format of the model.
-        model_type (:obj:`str`): **{"rtdetr_r18vd", "rtdetr_r34vd", 
-        "rtdetr_r50vd", "rtdetr_r101vd", "rtdetr_r18vd_coco_o365",
-        "rtdetr_r50vd_coco_o365", "rtdetr_r101vd_coco_o365"}, 
-        default="rtdetr_r50vd"**. |br|
+        model_path (:obj:`str`): **{"PekingU/rtdetr_r18vd", "PekingU/rtdetr_r34vd", 
+            "PekingU/rtdetr_r50vd", "PekingU/rtdetr_r101vd", "PekingU/rtdetr_r18vd_coco_o365",
+            "PekingU/rtdetr_r50vd_coco_o365", "PekingU/rtdetr_r101vd_coco_o365"}, 
+            default="PekingU/rtdetr_r50vd"**. |br|
             Defines the type of RT-DETR model to be used.
         weights_parent_dir (:obj:`Optional[str]`): **default = null**. |br|
             Change the parent directory where weights will be stored by
@@ -104,7 +105,7 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
             "detect": List[Union[int, str]],
             "input_size": int,
             "model_format": str,
-            "model_type": str,
+            "model_path": str,
             "score_threshold": float,
             "weights_parent_dir": Optional[str],
         }

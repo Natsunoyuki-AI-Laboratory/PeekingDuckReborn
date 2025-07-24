@@ -25,10 +25,11 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
     """Initializes and uses VITPose to infer keypoints from an image frame.
 
     The VITPose node is capable of detecting keypoints from bounding boxes.
-    The ``"vitpose-plus-small"`` model is used by default and can be changed to 
-    one of ``("vitpose-plus-small", "vitpose-plus-base", "vitpose-plus-large", 
-    "vitpose-plus-huge", "vitpose-base", "vitpose-base-simple", 
-    "vitpose-base-coco-aic-mpii")``.
+    The ``"usyd-community/vitpose-plus-small"`` model is used by default and can be 
+    changed to one of ``("usyd-community/vitpose-plus-small", "usyd-community/vitpose-plus-base", 
+    "usyd-community/vitpose-plus-large", "usyd-community/vitpose-plus-huge", 
+    "usyd-community/vitpose-base", "usyd-community/vitpose-base-simple", 
+    "usyd-community/vitpose-base-coco-aic-mpii")``.
 
     Inputs:
         |img_data|
@@ -46,10 +47,14 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         model_format (:obj:`str`): **{"pytorch"},
             default="pytorch"** |br|
             Defines the weights format of the model.
-        model_type (:obj:`str`): **{"vitpose-plus-small", "vitpose-plus-base",
-            "vitpose-plus-large", "vitpose-plus-huge", "vitpose-base", 
-            "vitpose-base-simple", "vitpose-base-coco-aic-mpii"}, 
-            default="vitpose-plus-small"**. |br|
+        model_path (:obj:`str`): **{"usyd-community/vitpose-plus-small", 
+            "usyd-community/vitpose-plus-base",
+            "usyd-community/vitpose-plus-large", 
+            "usyd-community/vitpose-plus-huge", 
+            "usyd-community/vitpose-base", 
+            "usyd-community/vitpose-base-simple", 
+            "usyd-community/vitpose-base-coco-aic-mpii"}, 
+            default="usyd-community/vitpose-plus-small"**. |br|
             Defines the type of VITPose model to be used.
         weights_parent_dir (:obj:`Optional[str]`): **default = null**. |br|
             Change the parent directory where weights will be stored by
@@ -99,7 +104,7 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
             "resolution.height": int,
             "resolution.width": int,
             "model_format": str,
-            "model_type": str,
+            "model_path": str,
             "keypoint_score_threshold": float,
             "weights_parent_dir": Optional[str],
         }

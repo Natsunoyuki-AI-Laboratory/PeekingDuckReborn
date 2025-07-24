@@ -6,25 +6,20 @@ score_threshold: 0.5
 input_size: 640
 
 # Flag to use the model weights hosted on HuggingFace or not.
-huggingface: True
-# https://huggingface.co/docs/transformers/main/en/model_doc/rt_detr
-model_type: rtdetr_r50vd
-# Models trained on MS-COCO:
-# rtdetr_r18vd, rtdetr_r34vd, rtdetr_r50vd, rtdetr_r101vd.
-# Models trained on MS-COCO + Objects 365:
-# rtdetr_r18vd_coco_o365, rtdetr_r50vd_coco_o365, rtdetr_r101vd_coco_o365.
-# Model directory on HuggingFace: https://huggingface.co/PekingU.
-huggingface_model_dir: PekingU
+# If `online: True`, the model weights will be downloaded from
+# HuggingFace. If not, the model weights will be loaded from 
+# `peekingduck_weights/` (see `weights_parent_dir` below).
+online: True # Use the online weights on HuggingFace or not.
 
-# Path to local custom weights.
-local_weights_path: null
+# model_path can be one of the following:
+# 1. HuggingFace model path e.g. PekingU/rtdetr_r50vd.
+#     a. If online: True, weights will be downloaded from HuggingFace.
+#     b. If online: False, weights will be loaded from weights_parent_dir.
+# 2. Full path to some custom weights stored locally.
+model_path: PekingU/rtdetr_r50vd
 
-# TODO: RT-DETR will download the model and image processor weights and configs
-# from HuggingFace Hub: https://huggingface.co/PekingU/models. The weights are
-# typically stored under ~/.cache/huggingface/hub/, and not under the folder
-# `peekingduck_weights` like the default PeekingDuck model weights.
-# We will need to figure out how to merge this with the PeekingDuck models
-# which are downloaded from https://storage.googleapis.com/peekingduck/models.
+# Path to peekingduck_weights/ which is the default PeekingDuckReborn 
+# local weights subdirectory.
 weights_parent_dir: null
 weights: {
   pytorch: {
@@ -32,4 +27,3 @@ weights: {
   }
 }
 model_format: pytorch
-#num_classes: 80
