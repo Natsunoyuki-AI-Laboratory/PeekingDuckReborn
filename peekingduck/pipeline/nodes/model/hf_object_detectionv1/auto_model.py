@@ -13,9 +13,10 @@
 # You should have received a copy of the GNU General Public License along with 
 # PeekingDuckReborn. If not, see <https://www.gnu.org/licenses/>.
 
-"""RT-DETR models with model types: rtdetr_r18vd, rtdetr_r34vd, rtdetr_r50vd,
-rtdetr_r101vd, rtdetr_r18vd_coco_o365, rtdetr_r50vd_coco_o365, 
-rtdetr_r101vd_coco_o365."""
+"""HuggingFace AutoClasses automatically retrieve the relevant model given the 
+name/path to the pretrained weights/config/vocabulary.
+
+https://huggingface.co/docs/transformers/en/model_doc/auto."""
 
 import logging
 from typing import Any, Dict, List, Tuple
@@ -37,19 +38,11 @@ class AutoModel(ThresholdCheckerMixin, WeightsDownloaderMixin):
 
         self.check_bounds(["score_threshold"], "[0, 1]")
 
-        local_weights_path = self.config.get("local_weights_path", None)
-        if local_weights_path is None:
-            if self.config["online"] is True:
-                # Download the weights from HuggingFace in online mode.
-                model_path = self.config["huggingface_model_path"]
-            else:
-                # Load HuggingFace pre-trained weights from peekingduck_weights.
+        model_path = self.config["model_path"]
+        if not Path(model_path).exists():
+            if not self.config["online"]:
                 model_dir = self._find_paths()
-                model_path = self.config["huggingface_model_path"]
                 model_path = model_dir / model_path
-        else:
-            # Absolute path to custom local weights directory.
-            model_path = Path(local_weights_path)
 
         self.detect_ids = self.config["detect"]
 

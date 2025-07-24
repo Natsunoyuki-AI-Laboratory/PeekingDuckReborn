@@ -13,7 +13,8 @@
 # You should have received a copy of the GNU General Public License along with 
 # PeekingDuckReborn. If not, see <https://www.gnu.org/licenses/>.
 
-"""🔲 HuggingFace Auto Model for Object Detection."""
+"""🔲 HuggingFace Auto Model for Object Detection.
+https://huggingface.co/docs/transformers/en/model_doc/auto"""
 
 from typing import Any, Dict, List, Optional, Union
 
@@ -76,9 +77,10 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         """Returns dictionary mapping the node's config keys to respective types."""
         return {
             "detect": List[Union[int, str]],
-            "input_size": int,
-            "huggingface_model_path": str,
-            "model_format": str,
             "score_threshold": float,
+            "input_size": int,
+            "model_path": str,
+            "online": bool,
+            "model_format": str,
             "weights_parent_dir": Optional[str],
         }

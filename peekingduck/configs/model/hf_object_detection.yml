@@ -10,12 +10,16 @@ input_size: 640
 # HuggingFace. If not, the model weights will be loaded from 
 # `peekingduck_weights/` (see `weights_parent_dir` below).
 online: True # Use the online weights on HuggingFace or not.
-huggingface_model_path: PekingU/rtdetr_r50vd
 
-# Path to local custom weights.
-local_weights_path: null
+# model_path can be one of the following:
+# 1. HuggingFace model path e.g. PekingU/rtdetr_r50vd.
+#     a. If online: True, weights will be downloaded from HuggingFace.
+#     b. If online: False, weights will be loaded from weights_parent_dir.
+# 2. Full path to some custom weights stored locally.
+model_path: PekingU/rtdetr_r50vd
 
-# Path to peekingduck_weights/ PeekingDuckReborn 
+
+# Path to peekingduck_weights/ which is the default PeekingDuckReborn 
 # local weights subdirectory.
 weights_parent_dir: null
 weights: {
