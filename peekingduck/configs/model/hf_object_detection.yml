@@ -1,0 +1,30 @@
+input: ["img"]
+output: ["bboxes", "bbox_labels", "bbox_scores"]
+
+detect: [0]
+score_threshold: 0.5
+input_size: 640
+
+# Flag to use the model weights hosted on HuggingFace or not.
+# If `online: True`, the model weights will be downloaded from
+# HuggingFace. If not, the model weights will be loaded from 
+# `peekingduck_weights/` (see `weights_parent_dir` below).
+online: True # Use the online weights on HuggingFace or not.
+
+# model_path can be one of the following:
+# 1. HuggingFace model path e.g. PekingU/rtdetr_r18vd.
+#     a. If online: True, weights will be downloaded from HuggingFace.
+#     b. If online: False, weights will be loaded from weights_parent_dir.
+# 2. Full path to some custom weights stored locally.
+model_path: PekingU/rtdetr_r18vd
+
+
+# Path to peekingduck_weights/ which is the default PeekingDuckReborn 
+# local weights subdirectory.
+weights_parent_dir: null
+weights: {
+  pytorch: {
+    model_subdir: hf_object_detection,
+  }
+}
+model_format: pytorch
