@@ -32,6 +32,7 @@ GT_RESULTS = get_groundtruth(Path(__file__).resolve())
 def vit_pose_config():
     with open(PKD_DIR / "configs" / "model" / "vit_pose.yml") as infile:
         node_config = yaml.safe_load(infile)
+    node_config["model_path"] = "usyd-community/vitpose-plus-small"
     node_config["root"] = Path.cwd()
     # The following prevents pytest from creating `peekingduck_weights/`
     # in the parent directory of `PeekingDuckReborn/`.
@@ -55,8 +56,8 @@ class TestVitPose:
     def test_invalid_config_value(self, vit_pose_bad_config_value):
         with pytest.raises(ValueError) as excinfo:
             _ = Node(config=vit_pose_bad_config_value)
-
         assert "keypoint_score_threshold must be between [0.0, 1.0]" in str(excinfo.value)
+
 
     def test_no_human_image(self, no_human_image, vit_pose_config):
         """Tests VITPose on images with no humans present."""
@@ -75,8 +76,8 @@ class TestVitPose:
                 output[i], expected_output[i], err_msg=f"unexpected output for {i}"
             )
 
+
     def test_single_human(self, single_person_image, vit_pose_config):
-        """Using bboxes from MoveNet multipose_thunder."""
         single_human_img = cv2.imread(single_person_image)
         node = Node(vit_pose_config)
         output = node.run(
@@ -86,9 +87,9 @@ class TestVitPose:
             }
         )
 
-        model_type = node.config["model_type"]
+        model_path = node.config["model_path"]
         image_name = Path(single_person_image).stem
-        expected = GT_RESULTS[model_type][image_name]
+        expected = GT_RESULTS[model_path][image_name]
 
         npt.assert_allclose(output["keypoints"], expected["keypoints"], atol=1e-4)
         npt.assert_allclose(
@@ -98,15 +99,15 @@ class TestVitPose:
             output["keypoint_scores"], expected["keypoint_scores"], atol=1e-3
         )
 
+
     @pytest.mark.skip("WIP")
     def test_multi_person(self, multi_person_image, hrnet_config):
-        """Using bboxes from MoveNet multipose_thunder."""
         multi_person_img = cv2.imread(multi_person_image)
         hrnet = Node(hrnet_config)
 
-        model_type = hrnet.config["model_type"]
+        model_path = hrnet.config["model_path"]
         image_name = Path(multi_person_image).stem
-        expected = GT_RESULTS[model_type][image_name]
+        expected = GT_RESULTS[model_path][image_name]
         output = hrnet.run(
             {"img": multi_person_img, "bboxes": np.array(expected["bboxes"])}
         )

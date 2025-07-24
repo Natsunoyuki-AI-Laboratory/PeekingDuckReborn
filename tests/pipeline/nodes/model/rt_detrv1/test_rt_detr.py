@@ -34,7 +34,7 @@ GT_RESULTS = get_groundtruth(Path(__file__).resolve())
 def rt_detr_config():
     with open(PKD_DIR / "configs" / "model" / "rt_detr.yml") as infile:
         node_config = yaml.safe_load(infile)
-    node_config["model_type"] = "rtdetr_r18vd"
+    node_config["model_path"] = "PekingU/rtdetr_r18vd"
     node_config["root"] = Path.cwd()
     # The following prevents pytest from creating `peekingduck_weights/`
     # in the parent directory of `PeekingDuckReborn/`.
@@ -53,10 +53,10 @@ def rt_detr_bad_config_value(request, rt_detr_config):
     return rt_detr_config
 
 
-# TODO add the other larger RT-DETR models such as "rtdetr_r34vd", "rtdetr_r50vd".
-@pytest.fixture(params=["rtdetr_r18vd"])
+# TODO add the other RT-DETR models such as "rtdetr_r34vd", "rtdetr_r50vd".
+@pytest.fixture(params=["PekingU/rtdetr_r18vd"])
 def rt_detr_config_cpu(request, rt_detr_config):
-    rt_detr_config["model_type"] = request.param
+    rt_detr_config["model_path"] = request.param
     # Mock CUDA is not available.
     with mock.patch("torch.cuda.is_available", return_value=False):
         yield rt_detr_config
@@ -87,7 +87,7 @@ class TestRTDETR:
         assert "bboxes" in output
         assert output["bboxes"].size > 0
 
-        model_type = node.config["model_type"]
+        model_type = node.config["model_path"]
         image_name = Path(human_image).stem
         expected = GT_RESULTS[model_type][image_name]
 
@@ -105,7 +105,7 @@ class TestRTDETR:
         assert "bboxes" in output
         assert output["bboxes"].size > 0
 
-        model_type = node.config["model_type"]
+        model_type = node.config["model_path"]
         image_name = Path(human_image).stem
         expected = GT_RESULTS[model_type][image_name]
 
@@ -134,8 +134,7 @@ class TestRTDETR:
     def test_invalid_image(self, no_human_image, rt_detr_config):
         no_human_img = cv2.imread(no_human_image)
         node = Node(rt_detr_config)
-        # Potentially passing in a file path or a tuple from image reader
-        # output
+        # Potentially passing in a file path or a tuple from image reader output.
         with pytest.raises(TypeError) as excinfo:
             _ = node.run({"img": Path.cwd()})
         assert "image must be a np.ndarray" == str(excinfo.value)
