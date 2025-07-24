@@ -30,7 +30,7 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
 
     AutoModelforObjectDetection models are capable detecting objects from 80 categories. 
     The table of object categories can be found
-    :ref:`here <general-object-detection-ids>`. The ``"PekingU/rtdetr_r50vd "`` model is
+    :ref:`here <general-object-detection-ids>`. The ``"PekingU/rtdetr_r18vd "`` model is
     used by default.
 
     Inputs:
