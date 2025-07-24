@@ -31,9 +31,9 @@ The name "PeekingDuck" is a clever play on words: “Peeking” references compu
 - [X] Implement RT-DETR object detector model node.
 - [X] Implement VITPose pose keypoint detection model node.
 - [X] Create [PeekingDuckReborn wiki](https://github.com/Natsunoyuki-AI-Laboratory/PeekingDuckReborn/wiki) documentation to replace [the original](https://peekingduck.readthedocs.io/en/stable/index.html#what-is-peekingduck).
-- [ ] Greater integration of HuggingFace pipelines.
 - [ ] Modernize tests (WIP).
 - [ ] Pypi installer.
+- [ ] Greater integration of HuggingFace pipelines.
 - [ ] Fix issues involving TensorFlow on Windows GPU.
 - [ ] Remove/deprecate PeekingDuck Mosse tracker.
 - [ ] Remove/deprecate PeekingDuck pose estimation models (HRNet, MoveNet, PoseNet). 
