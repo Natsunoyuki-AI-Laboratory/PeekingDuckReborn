@@ -117,7 +117,9 @@ class Detector:  # pylint: disable=too-many-instance-attributes
     def preprocess(self, image, return_tensors="pt"):
         # HuggingFace image processors take in PIL images typically...
         image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-        inputs = self.image_processor(images=image, return_tensors=return_tensors)
+        inputs = self.image_processor(
+            images=image, return_tensors=return_tensors, device=self.device,
+        )
         inputs = inputs.to(self.device)
         return inputs
     
