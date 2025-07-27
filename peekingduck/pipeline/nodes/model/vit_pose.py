@@ -59,13 +59,14 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         weights_parent_dir (:obj:`Optional[str]`): **default = null**. |br|
             Change the parent directory where weights will be stored by
             replacing ``null`` with an absolute path to the desired directory.
-        resolution (:obj:`dict[int, int]`): 
-            **default={width: 256, height: 192}**. |br|
-            Input image resolution of the VITPose model.
         keypoint_score_threshold (:obj:`float`): 
             **[0, 1], default = 0.5**. |br|
             Keypoints with confidence score below the threshold will be
             replaced by -1.
+        online (:obj:`bool`): **default = True**. |br|
+            If online == True, the weights from HuggingFace will be downloaded and used.
+            If False, local weights will be loaded from weights_parent_dir by default.
+            Pass a full path to a custom finetuned model to use those weights.
 
     References:
         ViTPose: Simple Vision Transformer Baselines for Human Pose Estimation:
@@ -101,8 +102,6 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         Returns dictionary mapping the node's config keys to respective types.
         """
         return {
-            "resolution.height": int,
-            "resolution.width": int,
             "model_format": str,
             "model_path": str,
             "keypoint_score_threshold": float,

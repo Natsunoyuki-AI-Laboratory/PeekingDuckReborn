@@ -51,7 +51,6 @@ class VITPoseModel(ThresholdCheckerMixin, WeightsDownloaderMixin):
 
         self.detector = Detector(
             model_path,
-            self.config["resolution"],
             self.config["keypoint_score_threshold"],
         )
 

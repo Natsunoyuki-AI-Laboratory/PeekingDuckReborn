@@ -4,8 +4,8 @@ output: ["keypoints", "keypoint_scores", "keypoint_conns"]
 # Keypoint detection threshold.
 keypoint_score_threshold: 0.5
 
-# Input resolution. Do not touch this. Baked into the model.
-resolution: {width: 192, height: 256}
+# Input resolution. Baked into the model. Cannot be adjusted.
+# resolution: {width: 192, height: 256}
 
 # Flag to use the model weights hosted on HuggingFace or not.
 # If `online: True`, the model weights will be downloaded from
