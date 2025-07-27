@@ -56,14 +56,16 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         weights_parent_dir (:obj:`Optional[str]`): **default = null**. |br|
             Change the parent directory where weights will be stored by
             replacing ``null`` with an absolute path to the desired directory.
-        input_size (:obj:`int`): **default=640**. |br|
-            Input image resolution of the RT-DETR model.
         detect (:obj:`List[Union[int, str]]`): **default=[0]**. |br|
             List of object class names or IDs to be detected. To detect all classes,
             refer to the :ref:`tech note <general-object-detection-ids>`.
         score_threshold (:obj:`float`): **[0, 1], default = 0.25**. |br|
             Bounding boxes with confidence score (product of objectness score
             and classification score) below the threshold will be discarded.
+        online (:obj:`bool`): **default = True**. |br|
+            If online == True, the weights from HuggingFace will be downloaded and used.
+            If False, local weights will be loaded from weights_parent_dir by default.
+            Pass a full path to a custom finetuned model to use those weights.
 
     References:
         DETRs Beat YOLOs on Real-time Object Detection:
@@ -103,7 +105,6 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         """Returns dictionary mapping the node's config keys to respective types."""
         return {
             "detect": List[Union[int, str]],
-            "input_size": int,
             "model_format": str,
             "model_path": str,
             "score_threshold": float,

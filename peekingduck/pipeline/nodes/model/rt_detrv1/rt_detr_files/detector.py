@@ -43,14 +43,12 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         self,
         model_path: Union[Path, str],
         detect_ids: List[int],
-        input_size: int=640,
         score_threshold: float=0.5,
     ) -> None:
         self.logger = logging.getLogger(__name__)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model_path = model_path
         self.detect_ids = detect_ids
-        self.input_size = (input_size, input_size)
         self.score_threshold = score_threshold
 
         self.model, self.image_processor = self.create_rtdetr_model()
@@ -68,10 +66,10 @@ class Detector:  # pylint: disable=too-many-instance-attributes
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Detects bounding boxes of selected object categories from an image.
 
-        The input image is first scaled according to the `input_size`
-        configuration option. Detection results will be filtered according to
-        `iou_threshold`, `score_threshold`, and `detect_ids` configuration
-        options. Bounding boxes coordinates are then normalized w.r.t. the
+        The input image is first processed by the image processor.
+        Detection results will be filtered according to `iou_threshold`, 
+        `score_threshold`, and `detect_ids` configuration options. 
+        Bounding boxes coordinates are then normalized w.r.t. the
         input `image` size.
 
         Args:
@@ -99,10 +97,8 @@ class Detector:  # pylint: disable=too-many-instance-attributes
 
     def create_rtdetr_model(self) -> Tuple[RTDetrForObjectDetection, RTDetrImageProcessor]:
         """Creates a RT-DETR model and loads its weights. Also loads the image
-        processor required to preprocess and postprocess the inference results.
-
-        Creates `detect_ids` as a `torch.Tensor`. Sets up `input_size` to a
-        square shape. Logs model configurations.
+        processor required to preprocess the input image and postprocess the 
+        inference results.
 
         Returns:
             (RTDetrForObjectDetection): RT-DETR model.
@@ -149,7 +145,6 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         self.logger.info(
             "RE-DETR model loaded with the following configs:\n\t"
             f"Model path: {self.model_path}\n\t"
-            f"Input resolution: {self.input_size}\n\t"
             f"IDs being detected: {self.detect_ids}\n\t"
             f"Score threshold: {self.score_threshold}\n\t"
         )

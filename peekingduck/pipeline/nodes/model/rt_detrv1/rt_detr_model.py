@@ -66,7 +66,6 @@ class RTDETRModel(ThresholdCheckerMixin, WeightsDownloaderMixin):
         self.detector = Detector(
             model_path,
             self.detect_ids,
-            self.config["input_size"],
             self.config["score_threshold"],
         )
 
