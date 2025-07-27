@@ -78,7 +78,6 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
         return {
             "detect": List[Union[int, str]],
             "score_threshold": float,
-            "input_size": int,
             "model_path": str,
             "online": bool,
             "model_format": str,
