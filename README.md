@@ -40,6 +40,7 @@ The name "PeekingDuck" is a clever play on words: “Peeking” references compu
 - [ ] Implement re-ID for BoT-SORT tracker dabble node. 
 - [ ] Update model weights repository on the internet to replace [the original](https://storage.googleapis.com/peekingduck/models)
 
+
 ## Features
 ### Build customizable, realtime computer vision pipelines
 * Use PeekingDuckReborn to develop custom computer vision pipelines with minimal lines of Python code.
@@ -92,34 +93,47 @@ You should see a video of a person waving his hand with
 
 The video will close automatically when it is run to the end, select the video window and press `q` to exit earlier.
 
+Use `peekingduck --help` to display help information for PeekingDuck's command-line interface.
 
-## Usage
-Create a project folder and initialize a PeekingDuck project.
+
+## Inference with PeekingDuckReborn
+Create a project folder and initialize a PeekingDuckReborn project.
 ```bash
 mkdir <project_dir>
 cd <project_dir>
 peekingduck init
 ```
-
-Run the demo pipeline.
+Create subfolders to contain the input data and the inference outputs.
 ```bash
-peekingduck run
+mkdir data/
+mkdir outputs/
 ```
+`<project_dir>` should have the following structure:
+```
+<project_dir>
+├───pipeline_config.yml
+├───data/
+├───outputs/
+└───src/
+    └───custom_nodes/
+        └───configs/
+```
+Place all the inference data in the subfolder data/. PeekingDuckReborn will automatically load images and videos from the specified inference subfolder. Update `pipeline_config.yml` to set the correct inference pipeline configurations, and run `peekingduck run` from the command line interface to start the inference.
 
-If you have a webcam, you should see a man waving on the output screen with
-[skeletal frame overlaid](https://raw.githubusercontent.com/natsunoyuki/PeekingDuckReborn/main/docs/source/assets/getting_started/default_pipeline.gif).
+Please refer to the wiki page<a href="https://github.com/Natsunoyuki-AI-Laboratory/PeekingDuckReborn/wiki/Inference-with-PeekingDuckReborn">Inference with PeekingDuckReborn</a> for more information on how to perform inference.
 
-Terminate the program by clicking on the output screen and pressing `q`.
+### Use Case Examples
+Please refer to the wiki page <a href="https://github.com/Natsunoyuki-AI-Laboratory/PeekingDuckReborn/wiki/Use-Case-Examples">Use Case Examples</a> for more information about applying PeekingDuckReborn to solve various use cases, such as monitoring foot traffic, or measuring high way vehicular traffic.
 
-Use `peekingduck --help` to display help information for PeekingDuck's command-line interface.
 
-### Specifying YAML Configuration Files
+## Specifying YAML Configuration Filepath
 Run the pipeline with a specified configuration `.yml` file.
 ```bash
 peekingduck run --config_path <path-to-config-yml-file>
 ```
 
-### Reading PeekingDuckReborn Output CSV Files
+
+## Parsing PeekingDuckReborn Output CSV Files
 PeekingDuckReborn outputs computer vision inference results as CSV files. For example an example output for object detection is:
 ```
 Time,bboxes,bbox_labels,obj_attrs
