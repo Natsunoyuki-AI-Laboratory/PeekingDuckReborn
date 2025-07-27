@@ -1,0 +1,8 @@
+input: ["img"]
+output: ["img"]
+
+max_dim: 640
+
+#width: null
+#height: null
+#scale: null
