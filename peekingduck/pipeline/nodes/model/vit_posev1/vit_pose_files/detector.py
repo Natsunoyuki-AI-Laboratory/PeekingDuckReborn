@@ -81,7 +81,7 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         """
         return (
             VitPoseForPoseEstimation.from_pretrained(self.model_path),
-            VitPoseImageProcessor.from_pretrained(self.model_path),
+            VitPoseImageProcessor.from_pretrained(self.model_path, use_fast=True),
         )
 
 
