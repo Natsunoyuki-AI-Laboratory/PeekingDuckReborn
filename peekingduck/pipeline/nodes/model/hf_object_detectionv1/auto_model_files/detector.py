@@ -47,7 +47,6 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         self,
         model_path: Union[Path, str],
         detect_ids: List[int],
-        input_size: int=640,
         score_threshold: float=0.5,
     ) -> None:
         self.logger = logging.getLogger(__name__)
@@ -57,7 +56,7 @@ class Detector:  # pylint: disable=too-many-instance-attributes
 
         self.model_path = model_path
         self.detect_ids = detect_ids
-        self.input_size = (input_size, input_size)
+
         self.score_threshold = score_threshold
         self.model = AutoModelForObjectDetection.from_pretrained(
             self.model_path)
@@ -77,8 +76,8 @@ class Detector:  # pylint: disable=too-many-instance-attributes
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Detects bounding boxes of selected object categories from an image.
 
-        The input image is first scaled according to the `input_size`
-        configuration option. Detection results will be filtered according to
+        The input image is first preprocessed by the image processor prior to 
+        inference. Detection results will be filtered according to
         `iou_threshold`, `score_threshold`, and `detect_ids` configuration
         options. Bounding boxes coordinates are then normalized w.r.t. the
         input `image` size.
@@ -138,7 +137,6 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         self.logger.info(
             "AutoModelForObjectDetection model loaded with the following configs:\n\t"
             f"Model path: {self.model_path}\n\t"
-            f"Input resolution: {self.input_size}\n\t"
             f"IDs being detected: {self.detect_ids}\n\t"
             f"Score threshold: {self.score_threshold}\n\t"
         )
