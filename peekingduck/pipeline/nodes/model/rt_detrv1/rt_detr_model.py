@@ -67,6 +67,7 @@ class RTDETRModel(ThresholdCheckerMixin, WeightsDownloaderMixin):
             model_path,
             self.detect_ids,
             self.config["score_threshold"],
+            self.config.get("use_fast_image_processor", True), 
         )
 
 

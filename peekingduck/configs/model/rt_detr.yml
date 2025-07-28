@@ -17,6 +17,11 @@ online: True # Use the online weights on HuggingFace or not.
 # 2. Full path to some custom weights stored locally.
 model_path: PekingU/rtdetr_r50vd
 
+# HuggingFace is starting to implement fast versions of image processors
+# based on torchvision. This node uses the fast version by default.
+# https://huggingface.co/docs/transformers/en/main_classes/image_processor
+use_fast_image_processor: True
+
 # Path to peekingduck_weights/ which is the default PeekingDuckReborn 
 # local weights subdirectory.
 weights_parent_dir: null

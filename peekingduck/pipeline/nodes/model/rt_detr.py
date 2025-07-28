@@ -66,6 +66,10 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
             If online == True, the weights from HuggingFace will be downloaded and used.
             If False, local weights will be loaded from weights_parent_dir by default.
             Pass a full path to a custom finetuned model to use those weights.
+         use_fast_image_processor (:obj:`bool`): **default = True**. |br|
+            If True, RTDetrImageProcessorFast will be used to preprocess the
+            input image. If False, RTDetrImageProcessor will be used instead which is slower.
+            https://huggingface.co/docs/transformers/en/main_classes/image_processor
 
     References:
         DETRs Beat YOLOs on Real-time Object Detection:
@@ -108,5 +112,7 @@ class Node(AbstractNode):  # pylint: disable=too-few-public-methods
             "model_format": str,
             "model_path": str,
             "score_threshold": float,
+            "online": bool,
+            "use_fast_image_processor": bool,
             "weights_parent_dir": Optional[str],
         }

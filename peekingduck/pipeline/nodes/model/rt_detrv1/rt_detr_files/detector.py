@@ -19,10 +19,9 @@ import logging
 from pathlib import Path
 from typing import List, Tuple, Union
 import cv2
-from PIL import Image
 import numpy as np
 import torch
-from transformers import RTDetrForObjectDetection, RTDetrImageProcessor
+from transformers import RTDetrForObjectDetection, RTDetrImageProcessor, RTDetrImageProcessorFast
 
 from peekingduck.pipeline.utils.bbox.transforms import xyxy2xyxyn
 
@@ -44,6 +43,7 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         model_path: Union[Path, str],
         detect_ids: List[int],
         score_threshold: float=0.5,
+        use_fast: bool=True,
     ) -> None:
         self.logger = logging.getLogger(__name__)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -51,8 +51,9 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         self.detect_ids = detect_ids
         self.score_threshold = score_threshold
 
+        self.use_fast = use_fast
         self.model, self.image_processor = self.create_rtdetr_model()
-
+        
         self.id2label = self.model.config.id2label
         label2id = {v: k for k, v in self.id2label.items()}
         self.detect_ids = [label2id.get(i, 0) for i in self.detect_ids]
@@ -104,10 +105,16 @@ class Detector:  # pylint: disable=too-many-instance-attributes
             (RTDetrForObjectDetection): RT-DETR model.
             (RTDetrImageProcessor): RT-DETR image processor.
         """
-        return (
-            RTDetrForObjectDetection.from_pretrained(self.model_path),
-            RTDetrImageProcessor.from_pretrained(self.model_path, use_fast=True),
-        )
+        if self.use_fast is True:
+            return (
+                RTDetrForObjectDetection.from_pretrained(self.model_path),
+                RTDetrImageProcessorFast.from_pretrained(self.model_path),
+            )
+        else:
+            return (
+                RTDetrForObjectDetection.from_pretrained(self.model_path),
+                RTDetrImageProcessor.from_pretrained(self.model_path),
+            )
 
 
     def preprocess(self, image, return_tensors="pt"):
@@ -116,8 +123,14 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         # The RT-DETR image processor comes in 2 variants - the original and the fast variant.
         # The fast variant DOES NOT convert input images internally to numpy arrays.
         # https://github.com/huggingface/transformers/blob/v4.53.3/src/transformers/models/rt_detr/image_processing_rt_detr_fast.py#L380
-        images = torch.from_numpy(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)).to(self.device)
-        inputs = self.image_processor(images=images, return_tensors=return_tensors)
+        # The normal variant converts input images internally to numpy arrays.
+        # https://github.com/huggingface/transformers/blob/v4.53.3/src/transformers/models/rt_detr/image_processing_rt_detr.py#L783
+        if self.use_fast is True:
+            images = torch.from_numpy(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)).to(self.device)
+            inputs = self.image_processor(images=images, return_tensors=return_tensors, device=self.device)
+        else:
+            images = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            inputs = self.image_processor(images=images, return_tensors=return_tensors)
         return inputs.to(self.device)
     
 
