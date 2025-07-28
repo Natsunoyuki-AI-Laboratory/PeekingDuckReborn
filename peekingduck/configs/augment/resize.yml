@@ -3,6 +3,5 @@ output: ["img"]
 
 max_dim: 640
 
-#width: null
-#height: null
-#scale: null
+width: null
+height: null
