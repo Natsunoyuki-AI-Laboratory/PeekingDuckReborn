@@ -139,6 +139,8 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         # The input images are converted to numpy in RGB internally.
         # Therefore simply convert from BGR to RGB and leave as ndarray.
         # https://github.com/huggingface/transformers/blob/v4.53.3/src/transformers/models/vitpose/image_processing_vitpose.py#L501
+        # TODO Update to fast variant when available on HF.
+        # https://huggingface.co/docs/transformers/en/main_classes/image_processor
         images = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         inputs = self.image_processor(
             images=images, boxes=[bboxes], return_tensors=return_tensors,

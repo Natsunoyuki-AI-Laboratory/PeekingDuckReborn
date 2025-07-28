@@ -113,6 +113,9 @@ class Detector:  # pylint: disable=too-many-instance-attributes
     def preprocess(self, image, return_tensors="pt"):
         # RT-DETR image processor takes images as RGB.
         # To tensor on CUDA for faster preprocessing.
+        # The RT-DETR image processor comes in 2 variants - the original and the fast variant.
+        # The fast variant DOES NOT convert input images internally to numpy arrays.
+        # https://github.com/huggingface/transformers/blob/v4.53.3/src/transformers/models/rt_detr/image_processing_rt_detr_fast.py#L380
         images = torch.from_numpy(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)).to(self.device)
         inputs = self.image_processor(images=images, return_tensors=return_tensors)
         return inputs.to(self.device)
