@@ -28,17 +28,16 @@ The name "PeekingDuck" is a clever play on words: “Peeking” references compu
 - [X] Fix issue regarding the local weights subdirectory and parent directory with `dotenv`.
 - [X] Replace `pkg_resources` with `importlib.metadata`.
 - [X] Implement BoT-SORT bounding box tracker (without reID) dabble node.
-- [X] Implement RT-DETR object detector model node.
-- [X] Implement VITPose pose keypoint detection model node.
+- [X] Implement HuggingFace RT-DETR object detector model node.
+- [X] Implement HuggingFace VITPose pose keypoint detection model node.
 - [X] Create [PeekingDuckReborn wiki](https://github.com/Natsunoyuki-AI-Laboratory/PeekingDuckReborn/wiki) documentation to replace [the original](https://peekingduck.readthedocs.io/en/stable/index.html#what-is-peekingduck).
-- [ ] Modernize tests (WIP).
-- [ ] Pypi installer.
-- [ ] Greater integration of HuggingFace pipelines.
+- [ ] Modernize tests.
 - [ ] Fix issues involving TensorFlow on Windows GPU.
 - [ ] Remove/deprecate PeekingDuck Mosse tracker.
 - [ ] Remove/deprecate PeekingDuck pose estimation models (HRNet, MoveNet, PoseNet). 
 - [ ] Implement re-ID for BoT-SORT tracker dabble node. 
 - [ ] Update model weights repository on the internet to replace [the original](https://storage.googleapis.com/peekingduck/models)
+- [ ] Pypi installer.
 
 
 ## Features
