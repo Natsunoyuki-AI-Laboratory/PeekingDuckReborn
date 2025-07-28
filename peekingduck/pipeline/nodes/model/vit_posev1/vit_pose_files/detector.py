@@ -136,10 +136,12 @@ class Detector:  # pylint: disable=too-many-instance-attributes
 
     def preprocess(self, image, bboxes, return_tensors="pt"):
         """Preprocess input images for ingestion by VITPose."""
-        # HuggingFace image processors take in PIL images typically...
-        image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        # The input images are converted to numpy in RGB internally.
+        # Therefore simply convert from BGR to RGB and leave as ndarray.
+        # https://github.com/huggingface/transformers/blob/v4.53.3/src/transformers/models/vitpose/image_processing_vitpose.py#L501
+        images = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         inputs = self.image_processor(
-            images=image, boxes=[bboxes], return_tensors=return_tensors,
+            images=images, boxes=[bboxes], return_tensors=return_tensors,
         ).to(self.device)
         # VITPose uses an MOE architecture. Need to specify dataset indexes for
         # each image.
@@ -170,15 +172,13 @@ class Detector:  # pylint: disable=too-many-instance-attributes
             kpts[:, 1] = kpts[:, 1] / image_shape[0]
 
             # Fill in the missing MSCOCO keypoints. There are 17 in total.
-            missing_kpts = np.array(
-                list(set(KEYPOINT_LABELS).difference(set(kpt_labels)))
-            )
+            missing_kpts = np.array(list(set(KEYPOINT_LABELS).difference(set(kpt_labels))))
             N_missing = len(missing_kpts)
             kpt_labels = np.concat([kpt_labels, missing_kpts])
             kpt_scores = np.concat([kpt_scores, np.array([0] * N_missing)])
             kpts = np.concat(
                 [kpts, np.array([-1, -1] * N_missing).reshape(N_missing, 2)], 
-                axis=0
+                axis=0,
             )
             
             # Sort all 17 keypoints by kpt_labels from 0 to 16.
@@ -193,7 +193,6 @@ class Detector:  # pylint: disable=too-many-instance-attributes
             keypoints[i, :, :] = kpts
             keypoint_scores[i, :] = kpt_scores
             keypoint_conns.append(get_mscoco_keypoint_connections(kpts, mask))
-
         return keypoints, keypoint_scores, keypoint_conns
 
 
@@ -205,9 +204,7 @@ class Detector:  # pylint: disable=too-many-instance-attributes
         )
 
 
-def get_mscoco_keypoint_connections(
-    keypoint: np.ndarray, mask: np.ndarray
-) -> np.ndarray:
+def get_mscoco_keypoint_connections(keypoint: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """Builds the keypoint connections between valid keypoints."""
     connections = []
     for start_joint, end_joint in SKELETON:
@@ -215,5 +212,4 @@ def get_mscoco_keypoint_connections(
             connections.append(
                 (keypoint[start_joint - 1], keypoint[end_joint - 1])
             )
-
     return np.array(connections)
