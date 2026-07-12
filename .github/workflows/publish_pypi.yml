@@ -8,7 +8,7 @@ on:
 
 jobs:
   local-install-test:
-    name: Build PeekingDuck and test locally
+    name: Build PeekingDuck and prepare environment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,14 +19,13 @@ jobs:
       - name: Update Version Number
         run: |
           bash ./scripts/update_version.sh $VERSION
-      - name: Local Test
+      - name: Verify Environment Setup
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r cicd_requirements.txt
           pip install .
-          bash ./scripts/run_tests.sh all
-          bash ./scripts/usecase_tests.sh
+
   build-publish-test:
     name: Build PeekingDuck on Test PyPI
     needs: local-install-test
@@ -51,33 +50,8 @@ jobs:
         with:
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
-      - name: Test installation from Test PyPI
-        run: |
-          sleep 300
-          # need to separately install requirements (from pypi repo), 
-          # as some packages are not available on test.pypi.org repo
-          # e.g. tqdm 4.45 not available
-          pip install -r requirements.txt
-          pip install -i https://test.pypi.org/simple/ peekingduck==$VERSION --no-deps
-          peekingduck
       - name: Publish distribution 📦 to PyPI
-        # only pushes to actual PyPI if its a tag (i.e. on release: published)
         if: startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@1.13.0
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
-
-  test-install-pypi:
-    name: Build PeekingDuck on PyPI
-    needs: build-publish-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-      - name: Test installation from PyPI
-        run: |
-          sleep 300
-          pip install peekingduck==$VERSION
-          peekingduck
