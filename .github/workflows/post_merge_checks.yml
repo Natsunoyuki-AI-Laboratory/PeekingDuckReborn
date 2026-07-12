@@ -6,8 +6,10 @@ on:
       - main
       - dev
       - docs-v1.2
+
 permissions:
   contents: read
+
 jobs:
   all_tests:
     runs-on: ${{ matrix.os }}
@@ -24,17 +26,9 @@ jobs:
           cache: "pip"
       - name: Install dependencies
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            TEST_VER=0.0.0dev
-          else
-            TEST_VER=`grep -m 1 TEST_VERSION ./tests/module_import/test_module_import.py | cut -d ' ' -f 3`
-            TEST_VER=`echo ${TEST_VER} | cut -d '"' -f 2`
-          fi
-          echo "test_module_import.py TEST_VER=${TEST_VER}"
           python -m pip install --upgrade pip
           pip install wheel
           pip install -r requirements.txt
           pip install -r cicd_requirements.txt
-          bash ./scripts/update_version.sh ${TEST_VER}
           pip install . --no-dependencies
         shell: bash
