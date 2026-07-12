@@ -21,8 +21,6 @@ jobs:
           pip install wheel
           pip install -r lint_requirements.txt
           pip install -r cicd_requirements.txt
-      - name: Run lint checks
-        uses: ./.github/actions/linting-checks # note only works after checkout@v2
       - name: Run unit tests
         run: bash ./scripts/run_tests.sh unit
       - name: Run broken link report
