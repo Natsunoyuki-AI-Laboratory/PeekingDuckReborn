@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: tibdex/github-app-token@36464acb844fc53b9b8b2401da68844f6b05ebb0
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PEM }}
@@ -69,6 +69,7 @@ jobs:
       - name: Set fields
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          TODO_OPTION_ID: ${{ env.TODO_OPTION_ID }}
         run: |
           gh api graphql -f query='
             mutation (
@@ -89,4 +90,4 @@ jobs:
                   id
                   }
               }
-            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f status_field=$STATUS_FIELD_ID -f status_value=${{ env.TODO_OPTION_ID }} --silent
+            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f status_field=$STATUS_FIELD_ID -f status_value=$TODO_OPTION_ID --silent

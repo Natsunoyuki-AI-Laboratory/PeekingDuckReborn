@@ -6,13 +6,13 @@ on:
 
 jobs:
   build-publish-test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.7
+        python-version: 3.12
     - name: Post to Discord
       run: |
         pip install requests pytz
