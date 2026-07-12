@@ -3,6 +3,11 @@ on:
   issues:
     types:
       - opened
+permissions:
+  issues: write
+  pull-requests: write
+  repository-projects: write
+  contents: read
 jobs:
   track_issue:
     runs-on: ubuntu-latest

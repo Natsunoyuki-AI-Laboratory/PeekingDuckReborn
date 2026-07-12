@@ -6,7 +6,8 @@ on:
       - main
       - dev
       - docs-v1.2
-
+permissions:
+  contents: read
 jobs:
   all_tests:
     runs-on: ${{ matrix.os }}

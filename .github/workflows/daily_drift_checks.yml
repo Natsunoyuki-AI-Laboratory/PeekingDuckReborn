@@ -6,6 +6,9 @@ on:
     # 22:00 UTC is exactly 6:00 AM SGT
     - cron: "0 22 * * *"
 
+permissions:
+  contents: read
+
 jobs:
   system-checks:
     runs-on: ${{ matrix.os }}

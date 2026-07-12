@@ -1,6 +1,7 @@
 name: Premerge Checks
 on: [push, pull_request]
-
+permissions:
+  contents: read
 jobs:
   check_code:
     runs-on: ${{ matrix.os }}

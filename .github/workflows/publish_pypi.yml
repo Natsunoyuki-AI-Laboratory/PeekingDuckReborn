@@ -5,7 +5,8 @@ on:
   workflow_dispatch:
   release:
     types: [published]
-
+permissions:
+  contents: read
 jobs:
   local-install-test:
     name: Build PeekingDuck and prepare environment

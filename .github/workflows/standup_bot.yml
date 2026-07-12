@@ -3,7 +3,8 @@ on:
   schedule:
     # runs at 1:30am UTC (09:30am SGT) on Weekdays only
     - cron: '30 1 * * 1-5'
-
+permissions:
+  contents: read
 jobs:
   build-publish-test:
     runs-on: ubuntu-latest
